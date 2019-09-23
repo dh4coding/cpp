@@ -1,0 +1,66 @@
+#include <windows.h>
+#include <WinBase.h>//to call SYSTEM_POWER_STATUS Struct
+#include <iostream>
+using namespace std;
+
+//coded by dh4
+
+int main(int argc, _TCHAR* argv[])
+{
+
+	//usage sht
+	printf("usage: enter 1 to check if battery is charging or not\r\n");
+
+	printf("usage:enter 2 for battery charging status in Percentage\n\r");
+
+	//define struct
+	SYSTEM_POWER_STATUS PowerStatus;
+
+	//checking powerstatus 
+	if (GetSystemPowerStatus(&PowerStatus) == 0) cout << "PowerStatus failed" << endl;
+	else cout << "BATTERY PowerStatus ON: \n\r" << endl;
+
+	//input thing
+	int i = 0;
+	cin >> i;
+
+	if (i >= 3){
+		cout << "please enter correct number\r\n" << endl;
+	}
+
+	//--->charging status
+	if (i == 1){
+		switch (PowerStatus.ACLineStatus){
+
+		case 0:
+
+			puts("Battery is not charging!\r\n");
+			break;
+
+		case 1:
+			puts("Battery is charging!\r\n");
+
+			break;
+		default:
+			puts("unknown error!\r\n");
+			break;
+		}
+	}
+	
+
+		//--charging in percentage from 0-100
+		
+	if (i == 2){
+		
+		if (PowerStatus.BatteryLifePercent){
+
+			printf("Battery in %d Percentage!\r\n", PowerStatus.BatteryLifePercent);
+		}
+		else if (PowerStatus.BatteryLifePercent == 255) printf("unKnow error!\r\n");
+	}
+					
+		system("pause");
+	
+	return 0;
+}
+
